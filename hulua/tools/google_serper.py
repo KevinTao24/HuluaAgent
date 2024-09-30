@@ -1,5 +1,8 @@
+import os
+import sys
 from typing import Optional
 
+sys.path.insert(0, os.path.dirname(__file__) + "/../..")
 from hulua.shared.utils.google_serper_api import GoogleSerperAPISearch
 from hulua.tools.base import BaseTool
 
@@ -50,4 +53,4 @@ if __name__ == "__main__":
     )
     google_serper_tool.serper_api_search = google_serper_api_search
 
-    print(asyncio.run(google_serper_tool.a_call(input="中国首都是哪里")))
+    print(asyncio.run(google_serper_tool.a_call(input="上海的天气怎么样")))
