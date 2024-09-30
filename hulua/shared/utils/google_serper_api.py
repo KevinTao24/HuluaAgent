@@ -1,8 +1,10 @@
 from typing import Any, Dict, Literal, Optional
-
+import os
+import sys
+sys.path.insert(0, os.path.dirname(__file__)+'/../../..')
 import aiohttp
 import requests
-
+from urllib.parse import quote
 
 class GoogleSerperAPISearch:
     """
@@ -51,7 +53,7 @@ class GoogleSerperAPISearch:
             query, hl=self.hl, num=self.k, **kwargs
         )
 
-        return self._parse_results(results)
+        return self._parse_results(results, query)
 
     def _google_serper_search_results(
         self, search_term: str, search_type: str = "search", **kwargs: Any
@@ -98,17 +100,19 @@ class GoogleSerperAPISearch:
 
         return search_results
 
-    def _parse_results(self, results: Dict) -> str:
+    def _parse_results(self, results: Dict, query) -> str:
         snippets = []
 
         if results.get("answerBox"):
+            answer_values = []
             answer_box = results.get("answerBox", {})
             if answer_box.get("answer"):
-                return [answer_box.get("answer")]
+                return answer_box.get("answer")
             elif answer_box.get("snippet"):
-                return [answer_box.get("snippet").replace("\n", " ")]
+                return  answer_box.get("snippet").replace("\n", " ")
             elif answer_box.get("snippetHighlighted"):
-                return answer_box.get("snippetHighlighted")
+                return  answer_box.get("snippetHighlighted")
+
 
         if results.get("knowledgeGraph"):
             kg = results.get("knowledgeGraph", {})
@@ -131,7 +135,7 @@ class GoogleSerperAPISearch:
         if len(snippets) == 0:
             return ["No good Google Search Result was found"]
 
-        return " ".join(snippets)
+        return "\n".join(snippets)
 
 
 if __name__ == "__main__":
