@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, validator
-from reworkd_platform.web.api.agent.analysis import Analysis
+
+from hulua.apis.agents.analysis import Analysis
 
 LLM_Model = Literal["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "glm-4"]
 Loop_Step = Literal[

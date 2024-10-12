@@ -2,23 +2,21 @@ from typing import Any
 
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
 from lanarky.responses import StreamingResponse
-from langchain.chains.llm import LLMChain
+from langchain import LLMChain
 
 from hulua.tools.tool import Tool
 
 
-class Reason(Tool):
-    description = (
-        "Reason about task via existing information or understanding. "
-        "Make decisions / selections from options."
-    )
+class Code(Tool):
+    description = "Should only be used to write code, refactor code, fix code bugs, and explain programming concepts."
+    public_description = "Write and review code."
 
     async def call(
         self, goal: str, task: str, input_str: str, *args: Any, **kwargs: Any
     ) -> FastAPIStreamingResponse:
-        from hulua.agents.prompts import execute_task_prompt
+        from reworkd_platform.web.api.agent.prompts import code_prompt
 
-        chain = LLMChain(llm=self.model, prompt=execute_task_prompt)
+        chain = LLMChain(llm=self.model, prompt=code_prompt)
 
         return StreamingResponse.from_chain(
             chain,

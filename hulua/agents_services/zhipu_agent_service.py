@@ -6,30 +6,27 @@ from lanarky.responses import StreamingResponse
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain.chains.llm import LLMChain
 from langchain.output_parsers import PydanticOutputParser
-from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain.schema import HumanMessage
 from loguru import logger
 from pydantic import ValidationError
-from reworkd_platform.web.api.agent.analysis import Analysis, AnalysisArguments
-from reworkd_platform.web.api.agent.helpers import (
-    call_model_with_handling,
-    openai_error_handler,
-    parse_with_handling,
-)
-from reworkd_platform.web.api.agent.model_factory import WrappedChatOpenAI
-from reworkd_platform.web.api.agent.prompts import (
-    analyze_task_prompt,
+
+from hulua.agents.model_factory import WrappedChatglm
+from hulua.agents.prompts import (
+    analyze_task_prompt_zh,
     chat_prompt,
     create_tasks_prompt,
-    start_goal_prompt,
+    start_goal_prompt_zh,
 )
-from reworkd_platform.web.api.agent.tools.open_ai_function import get_tool_function
-from reworkd_platform.web.api.agent.tools.search import Search
-from reworkd_platform.web.api.agent.tools.utils import summarize
-
 from hulua.agents_services.base import BaseAgentService
+from hulua.apis.agents.analysis import Analysis, AnalysisArguments
+from hulua.apis.agents.helpers import call_model_with_handling, parse_with_handling
 from hulua.outputs.task_output_parser import TaskOutputParser
 from hulua.schema.model import ModelSettings
+
+# from reworkd_platform.web.api.agent.tools.open_ai_function import get_tool_function
+from hulua.shared.utils.utils import summarize
+from hulua.tools.google_serper import GoogleSerperTool
 from hulua.tools.tools import (
     get_default_tool,
     get_default_tool_name,
@@ -43,7 +40,7 @@ encoding = tiktoken.get_encoding("cl100k_base")
 class ZhipuAgentService(BaseAgentService):
     def __init__(
         self,
-        model: WrappedChatOpenAI,
+        model: WrappedChatglm,
         settings: ModelSettings,
         callbacks: Optional[List[AsyncCallbackHandler]],
     ):
@@ -59,9 +56,9 @@ class ZhipuAgentService(BaseAgentService):
         completion = await call_model_with_handling(
             self.model,
             ChatPromptTemplate.from_messages(
-                [SystemMessagePromptTemplate(prompt=start_goal_prompt)]
+                [HumanMessagePromptTemplate(prompt=start_goal_prompt_zh)]
             ),
-            {"goal": goal, "language": self.settings.language},
+            {"goal": goal},
             settings=self.settings,
             callbacks=self.callbacks,
         )
@@ -74,7 +71,7 @@ class ZhipuAgentService(BaseAgentService):
     async def analyze_task_agent(
         self, *, goal: str, task: str, tool_names: List[str]
     ) -> Analysis:
-        Analysis.get_default_analysis(task)
+        return Analysis.get_default_analysis(task)
 
     async def execute_task_agent(
         self,
@@ -88,7 +85,7 @@ class ZhipuAgentService(BaseAgentService):
             self.model.max_tokens = max(self.model.max_tokens - 1000, 3000)
 
         tool_class = get_tool_from_name(analysis.action)
-        return await tool_class(self.model, self.settings.language).call(
+        return await tool_class(self.model, self.settings.language).a_call(
             goal, task, analysis.arg
         )
 
@@ -102,7 +99,7 @@ class ZhipuAgentService(BaseAgentService):
         completed_tasks: Optional[List[str]] = None,
     ) -> List[str]:
         prompt = ChatPromptTemplate.from_messages(
-            [SystemMessagePromptTemplate(prompt=create_tasks_prompt)]
+            [HumanMessagePromptTemplate(prompt=create_tasks_prompt)]
         )
 
         args = {
@@ -150,7 +147,7 @@ class ZhipuAgentService(BaseAgentService):
         self.model.model_name = "gpt-3.5-turbo-16k"
         prompt = ChatPromptTemplate.from_messages(
             [
-                SystemMessagePromptTemplate(prompt=chat_prompt),
+                HumanMessagePromptTemplate(prompt=chat_prompt),
                 *[HumanMessage(content=result) for result in results],
                 HumanMessage(content=message),
             ]

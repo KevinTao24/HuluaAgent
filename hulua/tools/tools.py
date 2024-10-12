@@ -1,7 +1,10 @@
 from typing import List, Type
 
 from hulua.tools.base import BaseTool
+from hulua.tools.code import Code
 from hulua.tools.google_serper import GoogleSerperTool
+from hulua.tools.image import Image
+from hulua.tools.search import Search
 
 
 def get_default_tool() -> Type[BaseTool]:

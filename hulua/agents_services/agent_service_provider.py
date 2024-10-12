@@ -2,10 +2,13 @@ from typing import Any, Callable, Coroutine, Optional
 
 from fastapi import Depends
 
-from hulua.agents.model_factory import create_model_glm, create_model_openai
+from hulua.agents.model_factory import create_model_glm
 from hulua.agents_services.agent_service import AgentService
 from hulua.agents_services.mock_agent_service import MockAgentService
-from hulua.agents_services.openai_agent_service import OpenAIAgentService
+
+# from hulua.agents_services.openai_agent_service import (
+#     OpenAIAgentService,
+# )
 from hulua.agents_services.zhipu_agent_service import ZhipuAgentService
 from hulua.schema.agent import AgentRun, LLM_Model
 from hulua.settings import settings
