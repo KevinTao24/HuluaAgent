@@ -26,7 +26,7 @@ start_goal_prompt_zh = PromptTemplate(
 将查询限制为最多 5 个，并确保查询尽可能简洁。
 对于简单的问题，使用单一查询。
 
-将响应返回为 JSON 字符串数组。示例：
+将响应返回为 JSON 字符串数组, 以```json\n[\n,\n,\n,\n,\n]\n```的形式。示例：
 
 query: "谁被认为是本赛季最好的 NBA 球员？", answer: ["当前 NBA MVP 候选人"]
 query: "Olympicpayroll 品牌目前在市场上的地位如何，以及它在新泽西、纽约和宾夕法尼亚的扩展前景和策略是什么？", answer: ["Olympicpayroll 品牌综合分析 2023", "Olympicpayroll.com 的客户评价", "Olympicpayroll 市场地位分析", "工资单行业趋势预测 2023-2025", "新泽西、纽约、宾夕法尼亚的工资单服务扩展策略"]
@@ -205,9 +205,9 @@ summarize_with_sources_prompt_zh = PromptTemplate(
     同样，引用实际提到内容的来源。
     
     示例段落的句子：
-    “这是段落末尾引用的句子[1](https://test.com)。这是另一个句子。”
-    “斯蒂芬·库里是一名为勇士队效力的美国篮球运动员[1](https://www.britannica.com/biography/Stephen-Curry)。”
-    “由于贸易关系改善，该地区的经济增长预测已从2.5%调整为3.1%[1](https://economictimes.com)，而金融分析师预计通货膨胀率将保持在约1.7%的稳定水平[2](https://financeworld.com)。”
+    "这是段落末尾引用的句子[1](https://test.com)。这是另一个句子。"
+    "斯蒂芬·库里是一名为勇士队效力的美国篮球运动员[1](https://www.britannica.com/biography/Stephen-Curry)。"
+    "由于贸易关系改善，该地区的经济增长预测已从2.5%调整为3.1%[1](https://economictimes.com)，而金融分析师预计通货膨胀率将保持在约1.7%的稳定水平[2](https://financeworld.com)。"
     """,
     input_variables=["query", "snippets"],
 )

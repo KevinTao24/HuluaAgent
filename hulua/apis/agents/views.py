@@ -64,7 +64,7 @@ async def analyze_tasks(
 @router.post("/execute")
 async def execute_tasks(
     req_body=Depends(agent_execute_validator),
-    agent_service=Depends(get_agent_service(agent_execute_validator)),
+    agent_service=Depends(get_agent_service(agent_execute_validator, streaming=True)),
 ) -> FastAPIStreamingResponse:
     return await agent_service.execute_task_agent(
         goal=req_body.goal or "",

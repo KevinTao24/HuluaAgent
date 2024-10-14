@@ -56,7 +56,7 @@ class GoogleSerperAPISearch:
         results = await self._async_google_serper_search_results(
             query, hl=self.hl, num=self.k, **kwargs
         )
-
+        # return "".join(self._parse_results(results, query))
         return summarize_with_sources(model, lang, goal, task, self._parse_results(results, query))
 
     def _google_serper_search_results(
@@ -117,23 +117,25 @@ class GoogleSerperAPISearch:
             elif answer_box.get("snippetHighlighted"):
                 answer_values.append(answer_box.get("snippetHighlighted"))
 
-        if results.get("knowledgeGraph"):
-            kg = results.get("knowledgeGraph", {})
-            title = kg.get("title")
-            entity_type = kg.get("type")
-            if entity_type:
-                snippets.append(f"{title}: {entity_type}.")
-            description = kg.get("description")
-            if description:
-                snippets.append(description)
-            for attribute, value in kg.get("attributes", {}).items():
-                snippets.append(f"{title} {attribute}: {value}.")
+        # if results.get("knowledgeGraph"):
+        #     kg = results.get("knowledgeGraph", {})
+        #     title = kg.get("title")
+        #     entity_type = kg.get("type")
+        #     if entity_type:
+        #         snippets.append(f"{title}: {entity_type}.")
+        #     description = kg.get("description")
+        #     if description:
+        #         snippets.append(description)
+        #     for attribute, value in kg.get("attributes", {}).items():
+        #         snippets.append(f"{title} {attribute}: {value}.")
 
         for result in results[self.result_key_for_type[self.type]][: self.k]:
+            texts = []
             if "snippet" in result:
-                snippets.append(result["snippet"])
+                texts.append(result["snippet"])
             for attribute, value in result.get("attributes", {}).items():
-                snippets.append(f"{attribute}: {value}.")
+                texts.append(f"{attribute}: {value}.")
+            snippets.append("text: {text}, url: {url}".format(text="\n".join(texts),url=result["link"]))
 
         if len(snippets) == 0:
             return ["No good Google Search Result was found"]
