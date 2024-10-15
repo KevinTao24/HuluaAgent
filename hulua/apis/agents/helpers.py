@@ -6,7 +6,7 @@ from langchain.schema import BaseOutputParser, OutputParserException
 # from langchain.chat_models.base import BaseChatModel
 from langchain_core.language_models.chat_models import BaseChatModel
 
-from hulua.schema.agent import ModelSettings
+from hulua.schema.model import ModelSettings
 
 T = TypeVar("T")
 

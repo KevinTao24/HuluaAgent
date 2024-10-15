@@ -25,7 +25,9 @@ class GoogleSerperTool(Tool):
         **kwargs
     ) -> dict:
         """Run query through GoogleSearch and parse result."""
-        results = self.serper_api_search.run(query=input, model=self.model, goal=goal, task=task, **kwargs)
+        results = self.serper_api_search.run(
+            query=input, model=self.model, goal=goal, task=task, **kwargs
+        )
 
         return results
 
@@ -40,7 +42,9 @@ class GoogleSerperTool(Tool):
     ) -> dict:
         """Run query through GoogleSearch and parse result async."""
 
-        results = await self.serper_api_search.a_run(query=input, model=self.model, goal=goal, task=task, **kwargs)
+        results = await self.serper_api_search.a_run(
+            query=input, model=self.model, goal=goal, task=task, **kwargs
+        )
 
         return results
 

@@ -57,7 +57,7 @@ class Settings(BaseSettings):
 
     # Zhipu
     zhipu_api_base: str = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-    zhipu_api_key: str = "585f2d5ddf103304729767c75ab08094.uStCbbMiva4xxPTJ"
+    zhipu_api_key: str = "5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb"
 
     # Helicone
     helicone_api_base: str = "https://oai.hconeai.com/v1"

@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
 from pydantic import BaseModel
 
@@ -119,6 +119,46 @@ async def chat(
         message=req_body.message,
         results=req_body.results,
     )
+
+
+@router.post("/ques")
+async def ques(body: Dict) -> FastAPIStreamingResponse:
+    from langchain_core.messages import (
+        AIMessage,
+        BaseMessage,
+        HumanMessage,
+        SystemMessage,
+        ToolMessage,
+    )
+
+    from hulua.agents_services.zhipu import ChatZhipuAI
+
+    llm = ChatZhipuAI(
+        api_key="5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb", model="glm-4-plus"
+    )
+    candi = body.get("candi", "")
+    if isinstance(candi, str):
+        candi = eval(candi)
+    ques_list = candi.keys()
+    index = len(ques_list)
+    if index >= 8:
+        prompt = """你是一名保险代理人面试官，目标是选出潜在的绩优代理人，已知候选人的资料如下：【{candi}】,需要以面试官的口吻提出10个问题来全面了解代理人信息，当前是第{index}个问题，类型为问答题，你需要只输出问题本身，不需要包含题号，以列表的形式展示，如[""]，问题如下："""
+    else:
+        prompt = """你是一名保险代理人面试官，目标是选出潜在的绩优代理人，已知候选人的资料如下：【{candi}】,需要以面试官的口吻提出10个问题来全面了解代理人信息，当前是第{index}个问题，类型为选择题，你需要只输出问题本身和4个选项，不需要包含选项标识和题号，以列表的形式展示，如["","","","",""]，问题如下："""
+    messages = [
+        SystemMessage(content="你是一个小说家"),
+        HumanMessage(content=prompt.format(candi=candi, index=index)),
+    ]
+    result = {
+        "code": 200,
+        "message": "success",
+        "result": llm._generate(messages)
+        .dict()
+        .get("generations", [{}])[0]
+        .get("text", {}),
+    }
+
+    return result
 
 
 class ToolModel(BaseModel):

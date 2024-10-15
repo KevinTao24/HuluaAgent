@@ -5,10 +5,10 @@ import aiohttp
 from aiohttp import ClientResponseError
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
 from loguru import logger
-from hulua.settings import settings
 
 from hulua.apis.agents.reason import Reason
 from hulua.apis.agents.stream_mock import stream_string
+from hulua.settings import settings
 from hulua.shared.utils.utils import CitedSnippet, summarize_with_sources
 from hulua.tools.tool import Tool
 

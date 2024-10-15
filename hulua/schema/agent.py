@@ -5,7 +5,9 @@ from pydantic import BaseModel, Field, validator
 
 from hulua.apis.agents.analysis import Analysis
 
-LLM_Model = Literal["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "glm-4"]
+LLM_Model = Literal[
+    "gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "glm-4", "glm-4-plus"
+]
 Loop_Step = Literal[
     "start",
     "analyze",
@@ -19,13 +21,14 @@ LLM_MODEL_MAX_TOKENS: Dict[LLM_Model, int] = {
     "gpt-3.5-turbo-16k": 16000,
     "gpt-4": 8000,
     "glm-4": 8000,
+    "glm-4-plus": 16000,
 }
 
 
 class ModelSettings(BaseModel):
-    model: LLM_Model = Field(default="glm-4")
+    model: LLM_Model = Field(default="glm-4-plus")
     custom_api_key: Optional[str] = Field(
-        default="585f2d5ddf103304729767c75ab08094.uStCbbMiva4xxPTJ"
+        default="5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb"
     )
     temperature: float = Field(default=0.01, ge=0.0, le=1.0)
     max_tokens: int = Field(default=500, ge=0)

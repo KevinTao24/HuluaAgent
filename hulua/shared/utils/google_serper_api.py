@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import Any, Dict, Literal, Optional
+
 from hulua.shared.utils.utils import CitedSnippet, summarize_with_sources
 
 sys.path.insert(0, os.path.dirname(__file__) + "/../../..")
@@ -42,22 +43,30 @@ class GoogleSerperAPISearch:
     def __init__(self, serper_api_key: Optional[str] = None):
         self.serper_api_key = serper_api_key
 
-    def run(self, query: str, model=None, lang="简体中文", goal="", task="", **kwargs) -> Dict:
+    def run(
+        self, query: str, model=None, lang="简体中文", goal="", task="", **kwargs
+    ) -> Dict:
         """Run query through GoogleSearch and parse result."""
         results = self._google_serper_search_results(
             query, hl=self.hl, num=self.k, **kwargs
         )
 
-        return summarize_with_sources(model, lang, goal, task, self._parse_results(results, query))
+        return summarize_with_sources(
+            model, lang, goal, task, self._parse_results(results, query)
+        )
 
-    async def a_run(self, query: str, model=None, lang="简体中文", goal="", task="", **kwargs) -> Dict:
+    async def a_run(
+        self, query: str, model=None, lang="简体中文", goal="", task="", **kwargs
+    ) -> Dict:
         """Run query through GoogleSearch and parse result async."""
 
         results = await self._async_google_serper_search_results(
             query, hl=self.hl, num=self.k, **kwargs
         )
         # return "".join(self._parse_results(results, query))
-        return summarize_with_sources(model, lang, goal, task, self._parse_results(results, query))
+        return summarize_with_sources(
+            model, lang, goal, task, self._parse_results(results, query)
+        )
 
     def _google_serper_search_results(
         self, search_term: str, search_type: str = "search", **kwargs: Any
@@ -135,7 +144,11 @@ class GoogleSerperAPISearch:
                 texts.append(result["snippet"])
             for attribute, value in result.get("attributes", {}).items():
                 texts.append(f"{attribute}: {value}.")
-            snippets.append("text: {text}, url: {url}".format(text="\n".join(texts),url=result["link"]))
+            snippets.append(
+                "text: {text}, url: {url}".format(
+                    text="\n".join(texts), url=result["link"]
+                )
+            )
 
         if len(snippets) == 0:
             return ["No good Google Search Result was found"]

@@ -123,7 +123,7 @@ class ZhipuAgentService(BaseAgentService):
         goal: str,
         results: List[str],
     ) -> FastAPIStreamingResponse:
-        self.model.model_name = "glm-4"
+        self.model.model_name = "glm-4-plus"
         self.model.max_tokens = 8000  # Total tokens = prompt tokens + completion tokens
 
         snippet_max_tokens = 7000  # Leave room for the rest of the prompt

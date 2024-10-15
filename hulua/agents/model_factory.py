@@ -4,7 +4,7 @@ from langchain.chat_models import AzureChatOpenAI, ChatOpenAI
 from pydantic import Field
 
 from hulua.agents_services.zhipu import ChatZhipuAI
-from hulua.schema.agent import LLM_Model, ModelSettings
+from hulua.schema.model import LLM_Model, ModelSettings
 from hulua.settings import Settings
 
 

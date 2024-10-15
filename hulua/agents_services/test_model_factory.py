@@ -92,7 +92,7 @@ def test_create_model(streaming, use_azure):
         if not use_azure
         else "https://oai.azure.com"
     )
-    settings.zhipu_api_key = "585f2d5ddf103304729767c75ab08094.uStCbbMiva4xxPTJ"
+    settings.zhipu_api_key = "5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb"
     # settings.openai_api_version = "version"
 
     result = create_model_glm(settings, model_settings, streaming)

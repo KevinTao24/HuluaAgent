@@ -62,7 +62,7 @@ logger = logging.getLogger(__name__)
 
 API_TOKEN_TTL_SECONDS = 3 * 60
 ZHIPUAI_API_BASE = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-ZHIPU_API_KEY = "585f2d5ddf103304729767c75ab08094.uStCbbMiva4xxPTJ"
+ZHIPU_API_KEY = "5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb"
 
 
 def _is_pydantic_class(obj: Any) -> bool:
@@ -451,7 +451,7 @@ class ChatZhipuAI(BaseChatModel):
         emulator.
     """
 
-    model_name: Optional[str] = Field(default="glm-4", alias="model")
+    model_name: Optional[str] = Field(default="glm-4-plus", alias="model")
     """
     Model name to use, see 'https://open.bigmodel.cn/dev/api#language'.
     Alternatively, you can use any fine-tuned model from the GLM series.
@@ -889,7 +889,7 @@ if __name__ == "__main__":
     )
 
     llm = ChatZhipuAI(
-        api_key="585f2d5ddf103304729767c75ab08094.uStCbbMiva4xxPTJ", model="glm-4"
+        api_key="5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb", model="glm-4-plus"
     )
     messages = [SystemMessage(content="你是一个小说家"), HumanMessage(content="hello")]
     print(llm._generate(messages))
