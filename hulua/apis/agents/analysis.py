@@ -1,43 +1,43 @@
-# from typing import Dict
+from typing import Dict
 
-# from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, validator
 
-# from hulua.apis.agents.tools.google_serper import Search
-# from hulua.apis.agents.tools.tools import (
-#     get_available_tools_names,
-#     get_default_tool_name,
-#     get_tool_name,
-# )
-
-
-# class AnalysisArguments(BaseModel):
-#     """
-#     Arguments for the analysis function of a tool. OpenAI functions will resolve these values but leave out the action.
-#     """
-
-#     reasoning: str
-#     arg: str
+from hulua.tools.google_serper import GoogleSerperTool
+from hulua.tools.tools import (
+    get_available_tools_names,
+    get_default_tool_name,
+    get_tool_name,
+)
 
 
-# class Analysis(AnalysisArguments):
-#     action: str
+class AnalysisArguments(BaseModel):
+    """
+    Arguments for the analysis function of a tool. OpenAI functions will resolve these values but leave out the action.
+    """
 
-#     @field_validator("action")
-#     def action_must_be_valid_tool(cls, v: str) -> str:
-#         if v not in get_available_tools_names():
-#             raise ValueError(f"Analysis action '{v}' is not a valid tool")
-#         return v
+    reasoning: str
+    arg: str
 
-#     @field_validator("action")
-#     def search_action_must_have_arg(cls, v: str, values: Dict[str, str]) -> str:
-#         if v == get_tool_name(Search) and not values["arg"]:
-#             raise ValueError("Analysis arg cannot be empty if action is 'search'")
-#         return v
 
-#     @classmethod
-#     def get_default_analysis(cls, task: str) -> "Analysis":
-#         return cls(
-#             reasoning="Hmm... I'll try searching it up",
-#             action=get_default_tool_name(),
-#             arg=task,
-#         )
+class Analysis(AnalysisArguments):
+    action: str
+
+    @validator("action")
+    def action_must_be_valid_tool(cls, v: str) -> str:
+        if v not in get_available_tools_names():
+            raise ValueError(f"Analysis action '{v}' is not a valid tool")
+        return v
+
+    @validator("action")
+    def search_action_must_have_arg(cls, v: str, values: Dict[str, str]) -> str:
+        if v == get_tool_name(GoogleSerperTool) and not values["arg"]:
+            raise ValueError("Analysis arg cannot be empty if action is 'search'")
+        return v
+
+    @classmethod
+    def get_default_analysis(cls, task: str) -> "Analysis":
+        return cls(
+            reasoning="Hmm... I'll try searching it up",
+            action=get_default_tool_name(),
+            arg=task,
+        )

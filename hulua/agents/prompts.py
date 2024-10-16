@@ -205,9 +205,9 @@ summarize_with_sources_prompt_zh = PromptTemplate(
     同样，引用实际提到内容的来源。
     
     示例段落的句子：
-    "这是段落末尾引用的句子[1](https://test.com)。这是另一个句子。"
-    "斯蒂芬·库里是一名为勇士队效力的美国篮球运动员[1](https://www.britannica.com/biography/Stephen-Curry)。"
-    "由于贸易关系改善，该地区的经济增长预测已从2.5%调整为3.1%[1](https://economictimes.com)，而金融分析师预计通货膨胀率将保持在约1.7%的稳定水平[2](https://financeworld.com)。"
+    “这是段落末尾引用的句子[1](https://test.com)。这是另一个句子。”
+    “斯蒂芬·库里是一名为勇士队效力的美国篮球运动员[1](https://www.britannica.com/biography/Stephen-Curry)。”
+    “由于贸易关系改善，该地区的经济增长预测已从2.5%调整为3.1%[1](https://economictimes.com)，而金融分析师预计通货膨胀率将保持在约1.7%的稳定水平[2](https://financeworld.com)。”
     """,
     input_variables=["query", "snippets"],
 )

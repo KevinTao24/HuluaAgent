@@ -2,9 +2,9 @@ import time
 from typing import Any, List
 
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
-from shared.utils.mock_streaming import streaming_string
 
 from hulua.agents_services.base import BaseAgentService
+from hulua.shared.utils.mock_streaming import streaming_string
 
 
 class MockAgentService(BaseAgentService):

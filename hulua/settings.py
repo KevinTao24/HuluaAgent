@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import gettempdir
 from typing import List, Literal, Optional, Union
 
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 from yarl import URL
 
 TEMP_DIR = Path(gettempdir())
@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     """
 
     # Application settings
-    host: str = "127.0.0.1"
+    host: str = "0.0.0.0"
     port: int = 8000
     workers_count: int = 1
     reload: bool = True
@@ -55,20 +55,24 @@ class Settings(BaseSettings):
     openai_api_version: str = "2023-08-01-preview"
     azure_openai_deployment_name: str = "<Should be updated via env if using azure>"
 
+    # Zhipu
+    zhipu_api_base: str = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+    zhipu_api_key: str = "5883dd03650ccbfd219da66b3832e0ef.UuJtNmuEj5S9mROb"
+
     # Helicone
     helicone_api_base: str = "https://oai.hconeai.com/v1"
     helicone_api_key: Optional[str] = None
 
     replicate_api_key: Optional[str] = None
-    serper_api_key: Optional[str] = None
+    serper_api_key: Optional[str] = "089ac2ac3f6eaf8ba8d3e49939751a32e0664cc2"
 
     # Frontend URL for CORS
-    frontend_url: str = "http://localhost:3000"
+    frontend_url: str = "*"
     allowed_origins_regex: Optional[str] = None
 
     # Variables for the database
-    db_host: str = "localhost"
-    db_port: int = 3308
+    db_host: str = "192.168.191.9"
+    db_port: int = 3306
     db_user: str = "reworkd_platform"
     db_pass: str = "reworkd_platform"
     db_base: str = "reworkd_platform"
